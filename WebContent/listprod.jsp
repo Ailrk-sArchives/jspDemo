@@ -28,20 +28,63 @@ catch (java.lang.ClassNotFoundException e)
 	out.println("ClassNotFoundException: " +e);
 }
 
-// Variable name now contains the search string the user entered
-// Use it to build a query and print out the resultset.  Make sure to use PreparedStatement!
-
-// Make the connection
-
-// Print out the ResultSet
-
-// For each product create a link of the form
-// addcart.jsp?id=productId&name=productName&price=productPrice
-// Close connection
+//Note: Forces loading of SQL Server driver
+try
+{	// Load driver class
+	Class.forName("com.microsoft.sqlserver.jdbc.SQLServerDriver");
+}
+catch (java.lang.ClassNotFoundException e)
+{
+	out.println("ClassNotFoundException: " +e);
+}
 
 // Useful code for formatting currency values:
 // NumberFormat currFormat = NumberFormat.getCurrencyInstance();
-// out.println(currFormat.format(5.0);	// Prints $5.00
+// out.println(currFormat.format(5.0);  // Prints $5.00
+String url = "jdbc:sqlserver://localhost:1433;DatabaseName=db_Lab7";
+String uid = "Jimmy";
+String pw = "123qweQWE!@#";
+
+String s = "<h1> All Product</h1> <table><tbody>" + "<tr><td>Product Name</td> <td>Price</td></tr>" ;
+try (Connection con = DriverManager.getConnection(url, uid, pw);
+	 PreparedStatement stmt1 = con.prepareStatement  ("select productId, productName, productPrice from product where productName = ?");
+	 PreparedStatement stmt2 = con.prepareStatement  ("select productId, productName, productPrice from product");) 
+	{
+	if (name == null || name == "") {
+		ResultSet rst = stmt2.executeQuery();
+		while (rst.next()) {
+			s += "<tr>"
+			  + String.format("<td>%s</td>", rst.getString(2))
+			  + String.format("<td>%d</td>", rst.getInt(1))
+			;
+		}
+		s += "</tr>";
+			
+	} else {
+		stmt1.setString(1, name);	
+		ResultSet rst = stmt1.executeQuery();
+
+		while (rst.next()) {
+			s += "<tr>"
+			  + String.format("<td>%s</td>", rst.getString(2))
+			  + String.format("<td>$%.2f</td>", rst.getBigDecimal(3))
+			;
+		}
+		s += "</tr>";
+	}
+	
+		 
+//      out.println("<table><tbody><tr><th>Name</th><th>Salary</th></tr><tr><td>"+rst.getString(1)+
+//   		  		"  </td><td>"+rst.getDouble(2)+
+//  		  		"</td></tr></tbody></table>");
+	  s += "</tbody></table>";
+  	  out.println(s);
+
+}
+catch (SQLException ex)
+{   out.println(ex);
+}
+
 %>
 
 </body>

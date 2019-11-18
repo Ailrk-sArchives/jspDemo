@@ -4,5 +4,6 @@ use db_Lab7;
 /* FROM ordersummary, customer */
 /* where ordersummary.customerId = customer.customerId; */
 
-select orderId, productId, quantity, price
-from orderproduct;
+/* select orderId, productId, quantity, price from orderproduct; */
+
+select productId, productName, productPrice from product where productName = "Chai";

@@ -75,29 +75,13 @@ try (Connection con = DriverManager.getConnection(url, uid, pw);
 
 			
 	  }
-	  s += "</tbody></table>";
-  out.println(s);
-//      out.println("<table><tbody><tr><th>Name</th><th>Salary</th></tr><tr><td>"+rst.getString(1)+
-//   		  		"  </td><td>"+rst.getDouble(2)+
-//  		  		"</td></tr></tbody></table>");
+	s += "</tbody></table>";
+	out.println(s);
 }
 catch (SQLException ex)
 {   out.println(ex);
 }
 
-// Make connection
-
-// Write query to retrieve all order summary records
-
-// For each order in the ResultSet
-
-	// Print out the order summary information
-	// Write a query to retrieve the products in the order
-	//   - Use a PreparedStatement as will repeat this query many times
-	// For each product in the order
-		// Write out product information 
-
-// Close connection
 %>
 
 </body>
