@@ -4,7 +4,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-<title>YOUR NAME Grocery Order List</title>
+<title>Lucky Cargo Grocery Order List</title>
 </head>
 <body>
 

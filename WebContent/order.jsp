@@ -8,7 +8,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-<title>YOUR NAME Grocery Order Processing</title>
+<title>Lucky Cargo Grocery Order Processing</title>
 </head>
 <body>
 
@@ -39,6 +39,18 @@ catch (java.lang.ClassNotFoundException e)
 	// Determine if there are products in the shopping cart
 	// If either are not true, display an error message
 	Connection con = DriverManager.getConnection(url, uid, pw);
+	
+	if (custId == null) {
+    	out.println("<h1>Could not place order!</h1><br/><p>User id is not valid.</p>");
+    	return;
+	}
+	
+	try {
+		int id = Integer.parseInt(custId);
+	} catch (NumberFormatException e) {
+    	out.println("<h1>Could not place order!</h1><br/><p>User id is not valid.</p>");
+		return;
+	}
 	
 	PreparedStatement stmt = con.prepareStatement("SELECT * from customer where customerId = ?");
 	stmt.setString(1, custId);
@@ -123,7 +135,7 @@ catch (java.lang.ClassNotFoundException e)
 	}
 	s += "</tbody></table>";
 	s += String.format("<h3>Order Total %s</h3>", currFormat.format(totalAmount));
-
+    s += "<h2><a href=\"listprod.jsp\">Continue Shopping</a></h2>";
 	out.print(s);
 	session.setAttribute("productList", new HashMap<String, ArrayList<Object>>());
   }
