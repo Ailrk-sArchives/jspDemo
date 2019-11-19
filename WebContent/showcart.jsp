@@ -26,7 +26,7 @@ else
 
 	out.println("<h1>Your Shopping Cart</h1>");
 	out.print("<table><tr><th>Product Id</th><th>Product Name</th><th>Quantity</th>");
-	out.println("<th>Price</th><th>Subtotal</th></tr>");
+	out.println("<th>Price</th><th>Subtotal</th><th></th></tr>");
 
 	double total =0;
 	Iterator<Map.Entry<String, ArrayList<Object>>> iterator = productList.entrySet().iterator();
@@ -67,6 +67,7 @@ else
 
 		out.print("<td align=\"right\">"+currFormat.format(pr)+"</td>");
 		out.print("<td align=\"right\">"+currFormat.format(pr*qty)+"</td></tr>");
+		out.print(String.format("<td><a href=\"removecart.jsp?id=%s\">remove</a></td>", (String)product.get(0)));
 		out.println("</tr>");
 		total = total +pr*qty;
 	}
