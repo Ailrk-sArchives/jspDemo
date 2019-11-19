@@ -1,3 +1,4 @@
+<%@page import="java.math.BigDecimal"%>
 <%@ page import="java.sql.*,java.net.URLEncoder" %>
 <%@ page import="java.text.NumberFormat" %>
 <%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF8"%>
@@ -53,9 +54,14 @@ try (Connection con = DriverManager.getConnection(url, uid, pw);
 	if (name == null || name == "") {
 		ResultSet rst = stmt2.executeQuery();
 		while (rst.next()) {
+			int id = rst.getInt(1);
+			String productName = rst.getString(2);
+			BigDecimal price = rst.getBigDecimal(3);
+
 			s += "<tr>"
-			  + String.format("<td>%s</td>", rst.getString(2))
-			  + String.format("<td>%d</td>", rst.getInt(1))
+			  + String.format("<td><a href=\"addcart.jsp?id=%d&name=%s&price=%.2f\">add Cart</a></td>", id, productName, price)
+			  + String.format("<td>%s</td>", productName)
+			  + String.format("<td>%.2f</td>", price)
 			;
 		}
 		s += "</tr>";
@@ -65,9 +71,13 @@ try (Connection con = DriverManager.getConnection(url, uid, pw);
 		ResultSet rst = stmt1.executeQuery();
 
 		while (rst.next()) {
+			int id = rst.getInt(1);
+			String productName = rst.getString(2);
+			BigDecimal price = rst.getBigDecimal(3);
 			s += "<tr>"
-			  + String.format("<td>%s</td>", rst.getString(2))
-			  + String.format("<td>$%.2f</td>", rst.getBigDecimal(3))
+			  + String.format("<td><a href=\"addcart.jsp?id=%sname=%sprice=%.2f\">add Cart</a></td>", id, productName, price)
+			  + String.format("<td>%s</td>", productName)
+			  + String.format("<td>$%.2f</td>", price)
 			;
 		}
 		s += "</tr>";

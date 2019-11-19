@@ -6,4 +6,6 @@ use db_Lab7;
 
 /* select orderId, productId, quantity, price from orderproduct; */
 
-select productId, productName, productPrice from product where productName = "Chai";
+select product.productId, productName, productPrice, quantity
+from product, orderproduct
+where product.productId = orderproduct.productId;
