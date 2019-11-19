@@ -93,7 +93,7 @@ catch (java.lang.ClassNotFoundException e)
     s += "<table><tbody>"
 		  + "<tr>"
 		  + String.format("<th>%s</th> <th>%s</th> <th>%s</th> <th>%s</th>",
-			  "Product", "Quantity", "Price (Unit)", "Total Amount")
+			  "Product", "Quantity", "Price", "Subtotal")
 		  + "</tr>";
 
 	for (ArrayList<Object> value : productList.values()) {
