@@ -1,5 +1,9 @@
 <%@ page trimDirectiveWhitespaces="true" import="java.sql.*,java.io.*" %><%@ include file="jdbc.jsp" %><%
 
+String url = "jdbc:sqlserver://localhost:1433;DatabaseName=db_Lab7";
+String uid = "Jimmy";
+String pw = "123qweQWE!@#";
+
 // Indicate that we are sending a JPG picture
 response.setContentType("image/jpeg");  
 
@@ -19,18 +23,17 @@ catch(Exception e)
 }
 
 // TODO: Modify SQL to retrieve productImage given productId
-String sql = "";
+String sql = "select productImage from Product where ProductId = ?";
 
-try 
+try (Connection con = DriverManager.getConnection(url, uid, pw);
+	 PreparedStatement stmt = con.prepareStatement(sql); )
 {
-	getConnection();
-	PreparedStatement stmt = con.prepareStatement(sql);
 	stmt.setInt(1,idVal);
 	ResultSet rst = stmt.executeQuery();		
 
 	int BUFFER_SIZE = 10000;
 	byte[] data = new byte[BUFFER_SIZE];
-
+	
 	if (rst.next())
 	{
 		// Copy stream of bytes from database to output stream for JSP/Servlet
@@ -45,11 +48,5 @@ try
 		istream.close();					
 	}
 } 
-catch (SQLException ex) {
-	out.println(ex);
-}
-finally
-{
-	closeConnection();
-}
+
 %>

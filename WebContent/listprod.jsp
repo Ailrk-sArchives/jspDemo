@@ -60,7 +60,8 @@ try (Connection con = DriverManager.getConnection(url, uid, pw);
 
 			s += "<tr>"
 			  + String.format("<td><a href=\"addcart.jsp?id=%d&name=%s&price=%.2f\">add Cart</a></td>", id, productName, price)
-			  + String.format("<td>%s</td>", productName)
+			  + String.format("<td><a href=\"product.jsp?id=%d&name=%s&price=%.2f\">%s</a></td>",
+			  					id, productName, price, productName)
 			  + String.format("<td>%.2f</td>", price)
 			;
 		}

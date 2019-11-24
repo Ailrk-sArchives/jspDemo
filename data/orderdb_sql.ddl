@@ -35,7 +35,7 @@ CREATE TABLE paymentmethod (
     customerId          INT,
     PRIMARY KEY (paymentMethodId),
     FOREIGN KEY (customerId) REFERENCES customer(customerid)
-        ON UPDATE CASCADE ON DELETE CASCADE 
+        ON UPDATE CASCADE ON DELETE CASCADE
 );
 
 CREATE TABLE ordersummary (
@@ -50,12 +50,12 @@ CREATE TABLE ordersummary (
     customerId          INT,
     PRIMARY KEY (orderId),
     FOREIGN KEY (customerId) REFERENCES customer(customerid)
-        ON UPDATE CASCADE ON DELETE CASCADE 
+        ON UPDATE CASCADE ON DELETE CASCADE
 );
 
 CREATE TABLE category (
     categoryId          INT IDENTITY,
-    categoryName        VARCHAR(50),    
+    categoryName        VARCHAR(50),
     PRIMARY KEY (categoryId)
 );
 
@@ -75,7 +75,7 @@ CREATE TABLE orderproduct (
     orderId             INT,
     productId           INT,
     quantity            INT,
-    price               DECIMAL(10,2),  
+    price               DECIMAL(10,2),
     PRIMARY KEY (orderId, productId),
     FOREIGN KEY (orderId) REFERENCES ordersummary(orderId)
         ON UPDATE CASCADE ON DELETE NO ACTION,
@@ -87,7 +87,7 @@ CREATE TABLE incart (
     orderId             INT,
     productId           INT,
     quantity            INT,
-    price               DECIMAL(10,2),  
+    price               DECIMAL(10,2),
     PRIMARY KEY (orderId, productId),
     FOREIGN KEY (orderId) REFERENCES ordersummary(orderId)
         ON UPDATE CASCADE ON DELETE NO ACTION,
@@ -97,26 +97,26 @@ CREATE TABLE incart (
 
 CREATE TABLE warehouse (
     warehouseId         INT IDENTITY,
-    warehouseName       VARCHAR(30),    
+    warehouseName       VARCHAR(30),
     PRIMARY KEY (warehouseId)
 );
 
 CREATE TABLE shipment (
     shipmentId          INT IDENTITY,
-    shipmentDate        DATETIME,   
-    shipmentDesc        VARCHAR(100),   
-    warehouseId         INT, 
+    shipmentDate        DATETIME,
+    shipmentDesc        VARCHAR(100),
+    warehouseId         INT,
     PRIMARY KEY (shipmentId),
     FOREIGN KEY (warehouseId) REFERENCES warehouse(warehouseId)
         ON UPDATE CASCADE ON DELETE NO ACTION
 );
 
-CREATE TABLE productinventory ( 
+CREATE TABLE productinventory (
     productId           INT,
     warehouseId         INT,
     quantity            INT,
-    price               DECIMAL(10,2),  
-    PRIMARY KEY (productId, warehouseId),   
+    price               DECIMAL(10,2),
+    PRIMARY KEY (productId, warehouseId),
     FOREIGN KEY (productId) REFERENCES product(productId)
         ON UPDATE CASCADE ON DELETE NO ACTION,
     FOREIGN KEY (warehouseId) REFERENCES warehouse(warehouseId)
@@ -126,10 +126,10 @@ CREATE TABLE productinventory (
 CREATE TABLE review (
     reviewId            INT IDENTITY,
     reviewRating        INT,
-    reviewDate          DATETIME,   
+    reviewDate          DATETIME,
     customerId          INT,
     productId           INT,
-    reviewComment       VARCHAR(1000),          
+    reviewComment       VARCHAR(1000),
     PRIMARY KEY (reviewId),
     FOREIGN KEY (customerId) REFERENCES customer(customerId)
         ON UPDATE CASCADE ON DELETE CASCADE,
@@ -176,7 +176,7 @@ INSERT product(productName, categoryId, productDesc, productPrice) VALUES ('Jack
 INSERT product(productName, categoryId, productDesc, productPrice) VALUES ('Singaporean Hokkien Fried Mee',8,'32 - 1 kg pkgs.',14.00);
 INSERT product(productName, categoryId, productDesc, productPrice) VALUES ('Louisiana Fiery Hot Pepper Sauce',2,'32 - 8 oz bottles',21.05);
 INSERT product(productName, categoryId, productDesc, productPrice) VALUES ('Laughing Lumberjack Lager',1,'24 - 12 oz bottles',14.00);
-    
+
 INSERT INTO customer (firstName, lastName, email, phonenum, address, city, state, postalCode, country, userid, password) VALUES ('Arnold', 'Anderson', 'a.anderson@gmail.com', '204-111-2222', '103 AnyWhere Street', 'Winnipeg', 'MB', 'R3X 45T', 'Canada', 'arnold' , 'test');
 INSERT INTO customer (firstName, lastName, email, phonenum, address, city, state, postalCode, country, userid, password) VALUES ('Bobby', 'Brown', 'bobby.brown@hotmail.ca', '572-342-8911', '222 Bush Avenue', 'Boston', 'MA', '22222', 'United States', 'bobby' , 'bobby');
 INSERT INTO customer (firstName, lastName, email, phonenum, address, city, state, postalCode, country, userid, password) VALUES ('Candace', 'Cole', 'cole@charity.org', '333-444-5555', '333 Central Crescent', 'Chicago', 'IL', '33333', 'United States', 'candace' , 'password');
