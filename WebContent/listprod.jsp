@@ -6,6 +6,8 @@
 <html>
 <head>
 <title>Lucky Cargo Grocery</title>
+<link rel="stylesheet" type="text/css" href="css/main.css">
+
 </head>
 <body>
 
@@ -18,7 +20,7 @@
 
 <% // Get product name to search for
 String name = request.getParameter("productName");
-		
+
 //Note: Forces loading of SQL Server driver
 try
 {	// Load driver class
@@ -46,10 +48,10 @@ String url = "jdbc:sqlserver://localhost:1433;DatabaseName=db_Lab7";
 String uid = "Jimmy";
 String pw = "123qweQWE!@#";
 
-String s = "<h1> All Product</h1> <table><tbody>" + "<tr><td>Product Name</td> <td>Price</td></tr>" ;
+String s = "<h1> All Product</h1><div class=\"table-wrapper\"> <table class=\"fl-table\"><tbody>" + "<tr><th>Product Name</th> <th>Price</th></tr>" ;
 try (Connection con = DriverManager.getConnection(url, uid, pw);
 	 PreparedStatement stmt1 = con.prepareStatement  ("select productId, productName, productPrice from product where productName = ?");
-	 PreparedStatement stmt2 = con.prepareStatement  ("select productId, productName, productPrice from product");) 
+	 PreparedStatement stmt2 = con.prepareStatement  ("select productId, productName, productPrice from product");)
 	{
 	if (name == null || name == "") {
 		ResultSet rst = stmt2.executeQuery();
@@ -66,9 +68,9 @@ try (Connection con = DriverManager.getConnection(url, uid, pw);
 			;
 		}
 		s += "</tr>";
-			
+
 	} else {
-		stmt1.setString(1, name);	
+		stmt1.setString(1, name);
 		ResultSet rst = stmt1.executeQuery();
 
 		while (rst.next()) {
@@ -83,12 +85,12 @@ try (Connection con = DriverManager.getConnection(url, uid, pw);
 		}
 		s += "</tr>";
 	}
-	
-		 
+
+
 //      out.println("<table><tbody><tr><th>Name</th><th>Salary</th></tr><tr><td>"+rst.getString(1)+
 //   		  		"  </td><td>"+rst.getDouble(2)+
 //  		  		"</td></tr></tbody></table>");
-	  s += "</tbody></table>";
+    s += "</tbody></table></div>";
   	  out.println(s);
 
 }

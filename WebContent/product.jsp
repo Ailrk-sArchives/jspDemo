@@ -36,17 +36,17 @@ String sql = "select productImageURL, productImage from Product where ProductId 
 try (Connection con = DriverManager.getConnection(url, uid, pw);
 	 PreparedStatement stmt1 = con.prepareStatement  (sql);) {
 	stmt1.setInt(1, Integer.parseInt(id));
-	ResultSet res = stmt1.executeQuery();			
+	ResultSet res = stmt1.executeQuery();
 	while (res.next()) {
 // TODO: If there is a productImageURL, display using IMG tag
 		String imgUrl = res.getString(1);
 		if (imgUrl != null) {
-			out.print(String.format("<br><img src=\"%s\">", imgUrl));	
+			out.print(String.format("<br><img src=\"%s\">", imgUrl));
 		}
 // TODO: Retrieve any image stored directly in database. Note: Call displayImage.jsp with product id as parameter.
-			
+
 		if (res.getBlob(2) != null) {
-			out.print(String.format("<br><img src=\"%s\">", "displayImage.jsp?id=" + id));		
+			out.print(String.format("<br><img src=\"%s\">", "displayImage.jsp?id=" + id));
 		}
 		out.print(String.format("<br><a href=\"addcart.jsp?id=%d&name=%s&price=%.2f\">Add to Cart</a><br>",
 			Integer.parseInt(id), name, Float.parseFloat(price))
@@ -57,9 +57,9 @@ try (Connection con = DriverManager.getConnection(url, uid, pw);
 	}
 }
 
-		
+
 // TODO: Add links to Add to Cart and Continue Shopping
-		
+
 %>
 
 </body>

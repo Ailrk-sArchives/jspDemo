@@ -2,6 +2,7 @@
 <html>
 <head>
         <title>Ray's Grocery Main Page</title>
+
 </head>
 <body>
 <h1 align="center">Welcome to Ray's Grocery</h1>
@@ -19,7 +20,7 @@
 <h2 align="center"><a href="logout.jsp">Log out</a></h2>
 
 <%
-// TODO: Display user name that is logged in (or nothing if not logged in)	
+// TODO: Display user name that is logged in (or nothing if not logged in)
 %>
 </body>
 </head>
