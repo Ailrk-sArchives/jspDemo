@@ -6,6 +6,7 @@
 <html>
 <head>
 <title>Lucky Cargo Grocery</title>
+<link rel="stylesheet" type="text/css" href="css/table.css">
 <link rel="stylesheet" type="text/css" href="css/main.css">
 
 </head>
@@ -48,9 +49,9 @@ String url = "jdbc:sqlserver://localhost:1433;DatabaseName=db_Lab7";
 String uid = "Jimmy";
 String pw = "123qweQWE!@#";
 
-String s = "<h1> All Product</h1><div class=\"table-wrapper\"> <table class=\"fl-table\"><tbody>" + "<tr><th>Product Name</th> <th>Price</th></tr>" ;
+String s = "<h1> All Product</h1><div class=\"table-wrapper\"> <table class=\"fl-table\"><tbody>" + "<tr><th>Add</th><th>Product Name</th> <th>Price</th></tr>" ;
 try (Connection con = DriverManager.getConnection(url, uid, pw);
-	 PreparedStatement stmt1 = con.prepareStatement  ("select productId, productName, productPrice from product where productName = ?");
+	 PreparedStatement stmt1 = con.prepareStatement  ("select productId, productName, productPrice, productImageURL, productImage from product where productName = ?");
 	 PreparedStatement stmt2 = con.prepareStatement  ("select productId, productName, productPrice from product");)
 	{
 	if (name == null || name == "") {
@@ -77,11 +78,19 @@ try (Connection con = DriverManager.getConnection(url, uid, pw);
 			int id = rst.getInt(1);
 			String productName = rst.getString(2);
 			BigDecimal price = rst.getBigDecimal(3);
+		  	String imgUrl = rst.getString(4);
 			s += "<tr>"
 			  + String.format("<td><a href=\"addcart.jsp?id=%sname=%sprice=%.2f\">add Cart</a></td>", id, productName, price)
 			  + String.format("<td>%s</td>", productName)
 			  + String.format("<td>$%.2f</td>", price)
 			;
+      if (imgUrl != null) {
+        s += String.format("<br><img src=\"%s\">", imgUrl);
+      }
+      if (rst.getBlob(5) != null) {
+        s += String.format("<br><img src=\"%s\">", "displayImage.jsp?id=" + id);
+      }
+
 		}
 		s += "</tr>";
 	}

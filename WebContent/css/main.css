@@ -6,7 +6,7 @@
 body{
     font-family: Helvetica;
     -webkit-font-smoothing: antialiased;
-    background: #c0ebd8;
+    background: #cededa;
 }
 
 h2{
@@ -17,5 +17,19 @@ h2{
     color: white;
     padding: 30px 0;
 }
+a {
+  margin: 0px;
+  transition: all 0.4s;
+  -webkit-transition: all 0.4s;
+  -o-transition: all 0.4s;
+  -moz-transition: all 0.4s;
+  text-decoration: none;
+}
 
+a:focus {
+  outline: none !important;
+}
 
+a:hover {
+  text-decoration: none;
+}
