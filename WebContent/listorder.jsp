@@ -3,9 +3,8 @@
 <%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF8"%>
 <!DOCTYPE html>
 <html>
-<head>
-<title>Lucky Cargo Grocery Order List</title>
-</head>
+<%@ include file="header.jsp" %>
+<link rel="stylesheet" type="text/css" href="css/table.css">
 <body>
 
 <h1>Order List</h1>
@@ -41,7 +40,7 @@ try (Connection con = DriverManager.getConnection(url, uid, pw);
 			  );
 	ResultSet rstp = stmt2.executeQuery("select orderId, productId, quantity, price from orderproduct");
 
-	s += "<table><tbody>"
+  s += "<div class=\"table-wrapper\"><table class=\"fl-table\"><tbody>"
 		  + "<tr>"
 		  + String.format("<th>%s</th> <th>%s</th> <th>%s</th> <th>%s</th> <th>%s</th>",
 			  "Order Id", "Order Date", "Customer Id", "Customer Name", "Total Amount")
@@ -75,7 +74,7 @@ try (Connection con = DriverManager.getConnection(url, uid, pw);
 
 
 	  }
-	s += "</tbody></table>";
+    s += "</tbody></table></div>";
 	out.println(s);
 }
 catch (SQLException ex)

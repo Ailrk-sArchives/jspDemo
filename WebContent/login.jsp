@@ -1,8 +1,7 @@
 <!DOCTYPE html>
 <html>
-<head>
-<title>Login Screen</title>
-</head>
+
+<%@ include file="header.jsp" %>
 <body>
 
 <div style="margin:0 auto;text-align:center;display:inline">

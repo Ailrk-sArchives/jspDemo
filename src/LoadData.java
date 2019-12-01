@@ -13,25 +13,25 @@ public class LoadData
 	{
 		loadData();
 	}
-	
+
 	public static void loadData() throws Exception
-	{		
+	{
 		// TODO: Change for your database/user information
 		String url = "jdbc:sqlserver://localhost:1433;DatabaseName=db_Lab7;";
 		String uid = "Jimmy";
 		String pw = "123qweQWE!@#";
-		
+
 		System.out.println("Connecting to database.");
 
 		Connection con = DriverManager.getConnection(url, uid, pw);
-				
+
 		String fileName = "data/orderdb_sql.ddl";
-		
+
 	    try
 	    {
 	        // Create statement
 	        Statement stmt = con.createStatement();
-	        
+
 	        Scanner scanner = new Scanner(new File(fileName));
 	        // Read commands separated by ;
 	        scanner.useDelimiter(";");
@@ -49,14 +49,14 @@ public class LoadData
 	            {	// Keep running on exception.  This is mostly for DROP TABLE if table does not exist.
 	            	System.out.println(e);
 	            }
-	        }	 
+	        }
 	        scanner.close();
-	        
+
 	        System.out.println("Database loaded.");
 	    }
 	    catch (Exception e)
 	    {
 	        System.out.println(e);
-	    }   
+	    }
 	}
 }
