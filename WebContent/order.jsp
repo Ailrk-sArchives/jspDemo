@@ -5,12 +5,14 @@
 <%@ page import="java.util.ArrayList" %>
 <%@ page import="java.util.Map" %>
 <%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF8"%>
-
 <!DOCTYPE html>
-<%@ include file="header.jsp" %>
+<html>
+<head>
+<title>Lucky Cargo Grocery Order Processing</title>
+</head>
 <body>
 
-<%
+<% 
 // Get customer id
 String custId = request.getParameter("customerId");
 @SuppressWarnings({"unchecked"})
@@ -31,29 +33,29 @@ catch (java.lang.ClassNotFoundException e)
   String url = "jdbc:sqlserver://localhost:1433;DatabaseName=db_Lab7";
   String uid = "Jimmy";
   String pw = "123qweQWE!@#";
-
+  
   try   {
 	// Determine if valid customer id was entered
 	// Determine if there are products in the shopping cart
 	// If either are not true, display an error message
 	Connection con = DriverManager.getConnection(url, uid, pw);
-
+	
 	if (custId == null) {
     	out.println("<h1>Could not place order!</h1><br/><p>User id is not valid.</p>");
     	return;
 	}
-
+	
 	try {
 		int id = Integer.parseInt(custId);
 	} catch (NumberFormatException e) {
     	out.println("<h1>Could not place order!</h1><br/><p>User id is not valid.</p>");
 		return;
 	}
-
+	
 	PreparedStatement stmt = con.prepareStatement("SELECT * from customer where customerId = ?");
 	stmt.setString(1, custId);
     ResultSet rst = stmt.executeQuery ();
-
+    
     if (!rst.next()) {
     	out.println("<h1>Could not place order!</h1><br/><p>User id is not valid.</p>");
     	return;
@@ -64,13 +66,13 @@ catch (java.lang.ClassNotFoundException e)
     	return;
     }
 	con.close();
-
+    
 // Save order information to database
 
 
 	/*
 	// Use retrieval of auto-generated keys.
-	PreparedStatement pstmt = con.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
+	PreparedStatement pstmt = con.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);			
 	ResultSet keys = pstmt.getGeneratedKeys();
 	keys.next();
 	int orderId = keys.getInt(1);
@@ -78,7 +80,7 @@ catch (java.lang.ClassNotFoundException e)
 	con = DriverManager.getConnection(url, uid, pw);
 	stmt = con.prepareStatement("INSERT INTO ordersummary (orderDate, totalAmount, customerId) VALUES (?, ?, ?)",
 			Statement.RETURN_GENERATED_KEYS);
-
+	
 	double totalAmount = 0;
 	for (ArrayList<Object> value : productList.values()) {
 		if (value == null || value.get(2) == null || value.get(3) == null) {
@@ -88,7 +90,7 @@ catch (java.lang.ClassNotFoundException e)
 		int qty = (int)value.get(3);
 		totalAmount += price * qty;
 	}
-
+	
 	stmt.setDate(1, new Date(System.currentTimeMillis()));
 	stmt.setDouble(2, totalAmount);
 	stmt.setString(3, custId);
@@ -97,8 +99,8 @@ catch (java.lang.ClassNotFoundException e)
     rst.next();
     int orderId = rst.getInt(1);
     con.close();
-
-
+    
+    
 	String s = String.format("<h1>Your order (#%d) has been placed</h1>", orderId);
     s += "<table><tbody>"
 		  + "<tr>"
@@ -117,18 +119,18 @@ catch (java.lang.ClassNotFoundException e)
 		String name = (String)value.get(1);
 		double price = Double.parseDouble((String)value.get(2));
 		int qty = (int)value.get(3);
-
+		
 		stmt.setInt(1, orderId);
 		stmt.setString(2, productId);
 		stmt.setInt(3, qty);
 		stmt.setDouble(4, price);
 		stmt.executeUpdate();
-
+		
 		s += String.format("<tr><td>%s</td>", name);
 		s += String.format("<td>%d</td>", qty);
 		s += String.format("<td>%s</td>", currFormat.format(price));
 		s += String.format("<td>%s</td></tr>", currFormat.format(price * qty));
-
+		
 		con.close();
 	}
 	s += "</tbody></table>";
@@ -147,7 +149,7 @@ catch (java.lang.ClassNotFoundException e)
 /*
 	Iterator<Map.Entry<String, ArrayList<Object>>> iterator = productList.entrySet().iterator();
 	while (iterator.hasNext())
-	{
+	{ 
 		Map.Entry<String, ArrayList<Object>> entry = iterator.next();
 		ArrayList<Object> product = (ArrayList<Object>) entry.getValue();
 		String productId = (String) product.get(0);

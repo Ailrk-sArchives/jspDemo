@@ -3,6 +3,7 @@
 <%
 	String authenticatedUser = null;
 	session = request.getSession(true);
+
 	try
 	{
 		authenticatedUser = validateLogin(out,request,session);
@@ -13,7 +14,7 @@
 	if(authenticatedUser != null)
 		response.sendRedirect("index.jsp");		// Successful login
 	else
-		response.sendRedirect("login.jsp");		// Failed login - redirect back to login page with a message
+		response.sendRedirect("login.jsp");		// Failed login - redirect back to login page with a message 
 %>
 
 
@@ -29,30 +30,21 @@
 		if((username.length() == 0) || (password.length() == 0))
 				return null;
 
-		try
+		try 
 		{
 			getConnection();
-			PreparedStatement stmt = con.prepareStatement("SELECT userid from customer where userid = ? and password = ?");
-			stmt.setString(1, username);
-			stmt.setString(2, password);
-			ResultSet rst = stmt.executeQuery();
-			System.out.print(username);
-			System.out.print(password);
-
-			if (rst.next()) {
-				retStr = rst.getString(1);
-			} else {
-				retStr = null;
-			}
-		}
+			
+			// TODO: Check if userId and password match some customer account. If so, set retStr to be the username.
+			retStr = "";			
+		} 
 		catch (SQLException ex) {
 			out.println(ex);
 		}
 		finally
 		{
 			closeConnection();
-		}
-
+		}	
+		
 		if(retStr != null)
 		{	session.removeAttribute("loginMessage");
 			session.setAttribute("authenticatedUser",username);
