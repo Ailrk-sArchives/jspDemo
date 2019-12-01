@@ -6,6 +6,7 @@
 </head>
 <body>
 
+<%@ include file="header.jsp" %>
 <%@ include file = "auth.jsp" %>
 <%@ include file="jdbc.jsp" %>
 <%

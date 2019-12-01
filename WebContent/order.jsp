@@ -11,10 +11,23 @@
 <title>Lucky Cargo Grocery Order Processing</title>
 </head>
 <body>
+<%@ include file="header.jsp" %>
+
+<%!
+	String validateField(HttpServletRequest request, String field) {
+		String p = request.getParameter(field);
+		if (p == null || p.equals("")) {
+			return String.format("Missing required field: %s", field);
+		}
+		return null;
+	}
+%>
 
 <% 
+
 // Get customer id
 String custId = request.getParameter("customerId");
+
 @SuppressWarnings({"unchecked"})
 HashMap<String, ArrayList<Object>> productList = (HashMap<String, ArrayList<Object>>) session.getAttribute("productList");
 
@@ -78,7 +91,10 @@ catch (java.lang.ClassNotFoundException e)
 	int orderId = keys.getInt(1);
 	*/
 	con = DriverManager.getConnection(url, uid, pw);
-	stmt = con.prepareStatement("INSERT INTO ordersummary (orderDate, totalAmount, customerId) VALUES (?, ?, ?)",
+	stmt = con.prepareStatement("INSERT INTO ordersummary"
+			+ " (orderDate, totalAmount, customerId, shipToAddress, shipToCity,"
+			+ " shipToState, shipToPostalCode, shipToCountry) VALUES "
+			+ "(?, ?, ?, ?, ?, ?, ?, ?)",
 			Statement.RETURN_GENERATED_KEYS);
 	
 	double totalAmount = 0;
@@ -91,13 +107,46 @@ catch (java.lang.ClassNotFoundException e)
 		totalAmount += price * qty;
 	}
 	
+	String msg = null;
+	msg = validateField(request, "address");
+	msg = validateField(request, "city");
+	msg = validateField(request, "state");
+	msg = validateField(request, "postalCode");
+	msg = validateField(request, "country");
+	msg = validateField(request, "paymentType");
+	msg = validateField(request, "paymentNumber");
+	msg = validateField(request, "paymentExpiry");
+	
+	if (msg != null) {
+		response.sendRedirect("checkout.jsp");
+		return;
+	}
+	
 	stmt.setDate(1, new Date(System.currentTimeMillis()));
 	stmt.setDouble(2, totalAmount);
 	stmt.setString(3, custId);
+	stmt.setString(4, request.getParameter("address"));
+	stmt.setString(5, request.getParameter("city"));
+	stmt.setString(6, request.getParameter("state"));
+	stmt.setString(7, request.getParameter("postalCode"));
+	stmt.setString(8, request.getParameter("country"));
+	
 	stmt.executeUpdate();
     rst = stmt.getGeneratedKeys ();
     rst.next();
     int orderId = rst.getInt(1);
+    
+    int custIdInt = Integer.parseInt(custId);
+		stmt = con.prepareStatement("DELETE from paymentmethod where customerid = ?");
+		stmt.setInt(1, custIdInt);
+		stmt.executeUpdate();
+	stmt = con.prepareStatement("INSERT INTO paymentmethod (paymentType, paymentNumber, paymentExpiryDate, customerId)"
+			+ " VALUES (?, ?, ?, ?)");
+	stmt.setString(1, request.getParameter("paymentType"));
+	stmt.setString(2, request.getParameter("paymentNumber"));
+	stmt.setDate(3, new Date(System.currentTimeMillis()));
+	stmt.setInt(4, custIdInt);
+	stmt.executeUpdate();
     con.close();
     
     
@@ -141,6 +190,7 @@ catch (java.lang.ClassNotFoundException e)
   }
   catch (SQLException ex)
   {   out.println(ex);
+  	ex.printStackTrace();
   }
 
 // Here is the code to traverse through a HashMap

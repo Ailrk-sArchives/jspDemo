@@ -10,6 +10,7 @@
 <title>Your Shopping Cart</title>
 </head>
 <body>
+<%@ include file="header.jsp" %>
 
 <%
 // Get the current list of products
@@ -30,7 +31,7 @@ else
 
 	double total =0;
 	Iterator<Map.Entry<String, ArrayList<Object>>> iterator = productList.entrySet().iterator();
-	while (iterator.hasNext()) 
+	while (iterator.hasNext())
 	{	Map.Entry<String, ArrayList<Object>> entry = iterator.next();
 		ArrayList<Object> product = (ArrayList<Object>) entry.getValue();
 		if (product.size() < 4)
@@ -38,7 +39,7 @@ else
 			out.println("Expected product with four entries. Got: "+product);
 			continue;
 		}
-		
+
 		out.print("<tr><td>"+product.get(0)+"</td>");
 		out.print("<td>"+product.get(1)+"</td>");
 
@@ -47,7 +48,7 @@ else
 		Object itemqty = product.get(3);
 		double pr = 0;
 		int qty = 0;
-		
+
 		try
 		{
 			pr = Double.parseDouble(price.toString());
@@ -63,11 +64,13 @@ else
 		catch (Exception e)
 		{
 			out.println("Invalid quantity for product: "+product.get(0)+" quantity: "+qty);
-		}		
+		}
 
 		out.print("<td align=\"right\">"+currFormat.format(pr)+"</td>");
 		out.print("<td align=\"right\">"+currFormat.format(pr*qty)+"</td></tr>");
 		out.print(String.format("<td><a href=\"removecart.jsp?id=%s\">remove</a></td>", (String)product.get(0)));
+		out.print(String.format("<td><a href=\"updatecart.jsp?id=%s&add=1\">+</a></td>", (String)product.get(0)));
+		out.print(String.format("<td><a href=\"updatecart.jsp?id=%s&add=0\">-</a></td>", (String)product.get(0)));
 		out.println("</tr>");
 		total = total +pr*qty;
 	}
@@ -80,5 +83,5 @@ else
 %>
 <h2><a href="listprod.jsp">Continue Shopping</a></h2>
 </body>
-</html> 
+</html>
 

@@ -3,10 +3,9 @@
 <%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF8"%>
 <!DOCTYPE html>
 <html>
-<head>
-<title>Lucky Cargo Grocery Order List</title>
-</head>
-<body>
+<%@ include file="header.jsp" %>
+<link rel="stylesheet" type="text/css" href="css/table.css">
+<body style="align: center;">
 
 <h1>Order List</h1>
 
@@ -30,52 +29,53 @@ String pw = "123qweQWE!@#";
 
 try (Connection con = DriverManager.getConnection(url, uid, pw);
 	 Statement stmt1 = con.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY);
-	 Statement stmt2 = con.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY);) 
+	 Statement stmt2 = con.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY);)
 	{
 
 	String s = "";
 	ResultSet rst = stmt1.executeQuery (
-			  "SELECT ordersummary.orderId, orderDate, ordersummary.customerId, firstName, lastName, totalAmount "  
+			  "SELECT ordersummary.orderId, orderDate, ordersummary.customerId, firstName, lastName, totalAmount "
 			  + "FROM ordersummary, customer "
-			  + "WHERE ordersummary.customerId = customer.customerId" 
-			  ); 
+			  + "WHERE ordersummary.customerId = customer.customerId"
+			  );
 	ResultSet rstp = stmt2.executeQuery("select orderId, productId, quantity, price from orderproduct");
 
-	s += "<table><tbody>"
-		  + "<tr>"
+  s += "<div class=\"table-wrapper\"><table class=\"fl-table\"><tbody>";
+
+	while (rst.next()) {
+		Integer orderId = rst.getInt(1);
+		s += "<tr>"
 		  + String.format("<th>%s</th> <th>%s</th> <th>%s</th> <th>%s</th> <th>%s</th>",
 			  "Order Id", "Order Date", "Customer Id", "Customer Name", "Total Amount")
-		  + "</tr>";
-		 
-	while (rst.next()) { 
-		Integer orderId = rst.getInt(1);
-		s += String.format("<tr><td>%d</td>", orderId) 
-			 + String.format("<td>%s</td>", rst.getDate(2))
-			 + String.format("<td>%d</td>", rst.getInt(3))
-			 + String.format("<td>%s %s</td>", rst.getString(4), rst.getString(5))
-			 + String.format("<td>%s</td></tr>", rst.getDouble(6))
-			 ;
-		String t = 
+		  + "</tr>"
+      + String.format("<tr><td>%d</td>", orderId)
+			+ String.format("<td>%s</td>", rst.getDate(2))
+			+ String.format("<td>%d</td>", rst.getInt(3))
+			+ String.format("<td>%s %s</td>", rst.getString(4), rst.getString(5))
+			+ String.format("<td>%s</td></tr>", rst.getDouble(6))
+      ;
+
+		String t =
 				   "<tr>"
 				  + String.format("<th>%s</th> <th>%s</th> <th>%s</th>",
 						  "Product Id", "Quantity", "Price");
 
-		while (rstp.next()) { 
+		while (rstp.next()) {
 		 	if (rstp.getInt(1) == orderId) {
-		  		t += String.format("<tr><td>%d</td>", rstp.getInt(2)) 
+		  		t += String.format("<tr><td>%d</td>", rstp.getInt(2))
 			   		+ String.format("<td>%d</td>", rstp.getInt(3))
 			   		+ String.format("<td>$%.2f</td></tr>", rstp.getBigDecimal(4));
-		 
+
 		 	} else  {
 		 		rstp.previous();
 		 		break;
 		 	}
 		}
+
 		s += t + "</tr>";
 
-			
 	  }
-	s += "</tbody></table>";
+  s += "</tbody></table></div>";
 	out.println(s);
 }
 catch (SQLException ex)

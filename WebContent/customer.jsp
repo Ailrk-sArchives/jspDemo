@@ -8,6 +8,7 @@
 <%@ include file="auth.jsp"%>
 <%@ page import="java.text.NumberFormat" %>
 <%@ include file="jdbc.jsp" %>
+<%@ include file="header.jsp" %>
 
 <%
 	String userName = (String) session.getAttribute("authenticatedUser");
@@ -51,7 +52,7 @@ try {
 
 // Make sure to close connection
 %>
-
+<a href="updateUser.jsp">Edit Profile</a>
 </body>
 </html>
 
