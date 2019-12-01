@@ -4,12 +4,10 @@
 <%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF8"%>
 <!DOCTYPE html>
 <html>
-<head>
-<title>Lucky Cargo Grocery</title>
+<%@ include file="header.jsp" %>
 <link rel="stylesheet" type="text/css" href="css/table.css">
 <link rel="stylesheet" type="text/css" href="css/main.css">
 
-</head>
 <body>
 
 <h1>Search for the products you want to buy:</h1>

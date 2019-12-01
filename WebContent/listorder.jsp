@@ -5,7 +5,7 @@
 <html>
 <%@ include file="header.jsp" %>
 <link rel="stylesheet" type="text/css" href="css/table.css">
-<body>
+<body style="align: center;">
 
 <h1>Order List</h1>
 
@@ -40,20 +40,21 @@ try (Connection con = DriverManager.getConnection(url, uid, pw);
 			  );
 	ResultSet rstp = stmt2.executeQuery("select orderId, productId, quantity, price from orderproduct");
 
-  s += "<div class=\"table-wrapper\"><table class=\"fl-table\"><tbody>"
-		  + "<tr>"
-		  + String.format("<th>%s</th> <th>%s</th> <th>%s</th> <th>%s</th> <th>%s</th>",
-			  "Order Id", "Order Date", "Customer Id", "Customer Name", "Total Amount")
-		  + "</tr>";
+  s += "<div class=\"table-wrapper\"><table class=\"fl-table\"><tbody>";
 
 	while (rst.next()) {
 		Integer orderId = rst.getInt(1);
-		s += String.format("<tr><td>%d</td>", orderId)
-			 + String.format("<td>%s</td>", rst.getDate(2))
-			 + String.format("<td>%d</td>", rst.getInt(3))
-			 + String.format("<td>%s %s</td>", rst.getString(4), rst.getString(5))
-			 + String.format("<td>%s</td></tr>", rst.getDouble(6))
-			 ;
+		s += "<tr>"
+		  + String.format("<th>%s</th> <th>%s</th> <th>%s</th> <th>%s</th> <th>%s</th>",
+			  "Order Id", "Order Date", "Customer Id", "Customer Name", "Total Amount")
+		  + "</tr>"
+      + String.format("<tr><td>%d</td>", orderId)
+			+ String.format("<td>%s</td>", rst.getDate(2))
+			+ String.format("<td>%d</td>", rst.getInt(3))
+			+ String.format("<td>%s %s</td>", rst.getString(4), rst.getString(5))
+			+ String.format("<td>%s</td></tr>", rst.getDouble(6))
+      ;
+
 		String t =
 				   "<tr>"
 				  + String.format("<th>%s</th> <th>%s</th> <th>%s</th>",
@@ -70,11 +71,11 @@ try (Connection con = DriverManager.getConnection(url, uid, pw);
 		 		break;
 		 	}
 		}
+
 		s += t + "</tr>";
 
-
 	  }
-    s += "</tbody></table></div>";
+  s += "</tbody></table></div>";
 	out.println(s);
 }
 catch (SQLException ex)

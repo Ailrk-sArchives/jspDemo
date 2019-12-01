@@ -31,12 +31,12 @@ try {
 	PreparedStatement stmt = con.prepareStatement(sql);
 	stmt.setString(1, userName);
 	ResultSet res = stmt.executeQuery();
-	
+
 	if (!res.next()) {
 		out.print(String.format("No info for user: %s", userName));
 		return;
 	}
-	
+
 	for (int i = 0; i < attributeNames.length; i++) {
 		String attr = attributeNames[i];
 		s += String.format("<tr><td><b>%s</b></td><td>%s</td></tr>", attr, res.getString(i + 1));
